@@ -8,7 +8,6 @@ int distancia_manhattan(coordenada_t p1, coordenada_t p2) {
     return abs(p1.fil - p2.fil) + abs(p1.col - p2.col);
 }
 bool es_posicion_valida(nivel_t nivel, coordenada_t pos) {
-    // 1. ¿Es una pared?
     for (int i = 0; i < nivel.tope_paredes; i++) {
         if (nivel.paredes[i].fil == pos.fil && nivel.paredes[i].col == pos.col) {
             return false;
@@ -86,6 +85,7 @@ void inicializar_juego(juego_t *juego){
     juego->homero.vidas_restantes = 5; 
     juego->homero.antorchas = 5;
     juego->homero.antorcha_encendida = false;
+
     juego->tope_niveles = MAX_NIVELES;
     juego->nivel_actual = 0;
     juego->camino_visible = false;
@@ -108,8 +108,7 @@ void mostrar_juego(juego_t juego) {
         mapa_nivel[pared.fil][pared.col] = 'X';
     }
     
-   bool en_runa = (juego.homero.posicion.fil == nivel_actual.camino[0].fil && 
-                    juego.homero.posicion.col == nivel_actual.camino[0].col);
+    bool en_runa = (juego.homero.posicion.fil == nivel_actual.camino[0].fil &&  juego.homero.posicion.col == nivel_actual.camino[0].col);
 
     // CAMINO
     for (int i = 0; i < nivel_actual.tope_camino; i++) {
@@ -277,9 +276,9 @@ for (int i = 0; i < nivel_actual->tope_obstaculos; i++) {
     if (juego->homero.posicion.fil == altar.fil && juego->homero.posicion.col == altar.col) {
         if (estado_nivel(*nivel_actual, juego->homero) == 1) {
             cambiar_nivel(juego);
-            printf("¡Nivel completado!\n");
+            estado_juego(*juego); // Verificar si el juego terminó después de cambiar de nivel
         } else {
-            printf("Necesitas el pergamino para avanzar...\n");
+            estado_juego(*juego); // Verificar si el juego terminó por salir del camino o perder vidas
         }
     }
 }

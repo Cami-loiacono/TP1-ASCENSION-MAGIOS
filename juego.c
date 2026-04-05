@@ -11,8 +11,23 @@ char solicitar_movimiento() {
 }
 
 int main(){
-    int vidas_iniciales = 5;
     juego_t juego;
-    inicializar_juego(&juego);
+    char movimiento;
 
+    inicializar_juego(&juego);
+    
+    while (estado_juego(juego) == 0) {
+        mostrar_juego(juego);
+        movimiento = solicitar_movimiento();
+        realizar_jugada(&juego, movimiento);
+    }
+    mostrar_juego(juego); // perdido o ganado
+    
+    int resultado = estado_juego(juego);
+    if (resultado == 1) {
+        printf("\n¡FELICITACIONES! Has ascendido a MAGIO.\n");
+    } else {
+        printf("\nGAME OVER...\n");
+        printf("Te espera la PIEDRA DEL CASTIGO!\n");
+    }
 }
